@@ -1,0 +1,728 @@
+# string, default=
+# load flags from file
+--flagfile=modules/common/data/global_flagfile.txt
+
+# string, default=
+# set flags from the environment [use 'export FLAGS_flag1=value']
+--fromenv=
+
+# string, default=
+# set flags from the environment if present
+--tryfromenv=
+
+# string, default=
+# comma-separated list of flag names that it is okay to specify on the command line even if the program does not define a flag with that name.  IMPORTANT: flags in this list that have arguments MUST use the flag=value format
+--undefok=
+
+# int32, default=80
+# Number of columns to use in output for tab completion
+--tab_completion_columns=80
+
+# string, default=
+# If non-empty, HandleCommandLineCompletions() will hijack the process and attempt to do bash-style command line flag completion on this value.
+--tab_completion_word=
+
+# bool, default=false
+# show help on all flags [tip: all flags can have two dashes]
+--help=false
+
+# bool, default=false
+# show help on all flags -- same as -help
+--helpfull=false
+
+# string, default=
+# show help on modules whose name contains the specified substr
+--helpmatch=
+
+# string, default=
+# show help on the modules named by this flag value
+--helpon=
+
+# bool, default=false
+# show help on all modules in the main package
+--helppackage=false
+
+# bool, default=false
+# show help on only the main module for this program
+--helpshort=false
+
+# bool, default=false
+# produce an xml version of help
+--helpxml=false
+
+# bool, default=false
+# show version and build info and exit
+--version=false
+
+# string, default=/apollo/hmi/audio_capture
+# HMI audio capture topic name.
+--audio_capture_topic=/apollo/hmi/audio_capture
+
+# string, default=/apollo/sensor/camera/image_long
+# long camera image topic name
+--camera_image_long_topic=/apollo/sensor/camera/image_long
+
+# string, default=/apollo/sensor/camera/image_short
+# short camera image topic name
+--camera_image_short_topic=/apollo/sensor/camera/image_short
+
+# string, default=/apollo/canbus/chassis_detail
+# chassis detail topic name
+--chassis_detail_topic=/apollo/canbus/chassis_detail
+
+# string, default=/apollo/canbus/chassis
+# chassis topic name
+--chassis_topic=/apollo/canbus/chassis
+
+# string, default=camera/image_raw
+# CompressedImage topic name
+--compressed_image_topic=camera/image_raw
+
+# string, default=/apollo/sensor/conti_radar
+# continental radar topic name
+--conti_radar_topic=/apollo/sensor/conti_radar
+
+# string, default=/apollo/control
+# control command topic name
+--control_command_topic=/apollo/control
+
+# string, default=/apollo/sensor/delphi_esr
+# delphi esr radar topic name
+--delphi_esr_topic=/apollo/sensor/delphi_esr
+
+# string, default=/apollo/drive_event
+# drive event topic name
+--drive_event_topic=/apollo/drive_event
+
+# bool, default=false
+# Whether enable dumping the messages to /tmp/adapters/<topic_name>/<seq_num>.txt for debugging purposes.
+--enable_adapter_dump=false
+
+# string, default=/apollo/sensor/gnss/best_pose
+# Gnss rtk best gnss pose
+--gnss_best_pose_topic=/apollo/sensor/gnss/best_pose
+
+# string, default=/apollo/sensor/gnss/raw_data
+# gnss raw data topic name
+--gnss_raw_data_topic=/apollo/sensor/gnss/raw_data
+
+# string, default=/apollo/sensor/gnss/rtk_eph
+# Gnss rtk ephemeris topic name
+--gnss_rtk_eph_topic=/apollo/sensor/gnss/rtk_eph
+
+# string, default=/apollo/sensor/gnss/rtk_obs
+# Gnss rtk observation topic name
+--gnss_rtk_obs_topic=/apollo/sensor/gnss/rtk_obs
+
+# string, default=/apollo/sensor/gnss/gnss_status
+# gnss status topic name
+--gnss_status_topic=/apollo/sensor/gnss/gnss_status
+
+# string, default=/apollo/sensor/gnss/odometry
+# GPS topic name
+--gps_topic=/apollo/sensor/gnss/odometry
+
+# string, default=/apollo/guardian
+# Guardian topic.
+--guardian_topic=/apollo/guardian
+
+# string, default=/apollo/sensor/gnss/heading
+# gnss heading topic name
+--heading_topic=/apollo/sensor/gnss/heading
+
+# string, default=/apollo/sensor/camera/obstacle/front_6mm
+# front camera image topic name for obstacles from camera
+--image_front_topic=/apollo/sensor/camera/obstacle/front_6mm
+
+# string, default=/apollo/sensor/camera/traffic/image_long
+# long camera image topic name
+--image_long_topic=/apollo/sensor/camera/traffic/image_long
+
+# string, default=/apollo/sensor/camera/traffic/image_short
+# short camera image topic name
+--image_short_topic=/apollo/sensor/camera/traffic/image_short
+
+# string, default=/apollo/sensor/camera/image_usb_cam
+# usb camera image topic name
+--image_usb_cam_topic=/apollo/sensor/camera/image_usb_cam
+
+# string, default=/apollo/sensor/gnss/corrected_imu
+# IMU topic name
+--imu_topic=/apollo/sensor/gnss/corrected_imu
+
+# string, default=/apollo/sensor/gnss/ins_stat
+# ins stat topic name
+--ins_stat_topic=/apollo/sensor/gnss/ins_stat
+
+# string, default=/apollo/sensor/gnss/ins_status
+# ins status topic name
+--ins_status_topic=/apollo/sensor/gnss/ins_status
+
+# string, default=/apollo/localization/msf_gnss
+# Gnss localization measurement topic name
+--localization_gnss_topic=/apollo/localization/msf_gnss
+
+# string, default=/apollo/localization/msf_lidar
+# Lidar localization measurement topic name
+--localization_lidar_topic=/apollo/localization/msf_lidar
+
+# string, default=/apollo/localization/msf_status
+# msf localization status
+--localization_msf_status=/apollo/localization/msf_status
+
+# string, default=/apollo/localization/msf_sins_pva
+# Localization sins pva topic name
+--localization_sins_pva_topic=/apollo/localization/msf_sins_pva
+
+# string, default=/apollo/localization/pose
+# localization topic name
+--localization_topic=/apollo/localization/pose
+
+# string, default=/apollo/sensor/mobileye
+# mobileye topic name
+--mobileye_topic=/apollo/sensor/mobileye
+
+# string, default=/apollo/monitor
+# ROS topic for monitor
+--monitor_topic=/apollo/monitor
+
+# string, default=/apollo/navigation
+# navigation
+--navigation_topic=/apollo/navigation
+
+# string, default=/apollo/control/pad
+# control pad message topic name
+--pad_topic=/apollo/control/pad
+
+# string, default=/apollo/sensor/pandora/camera/back_gray
+# pandora back gray camera topic name
+--pandora_camera_back_gray_topic=/apollo/sensor/pandora/camera/back_gray
+
+# string, default=/apollo/sensor/pandora/camera/front_color
+# pandora front color camera topic name
+--pandora_camera_front_color_topic=/apollo/sensor/pandora/camera/front_color
+
+# string, default=/apollo/sensor/pandora/camera/front_gray
+# pandora front gray camera topic name
+--pandora_camera_front_gray_topic=/apollo/sensor/pandora/camera/front_gray
+
+# string, default=/apollo/sensor/pandora/camera/left_gray
+# pandora left gray camera topic name
+--pandora_camera_left_gray_topic=/apollo/sensor/pandora/camera/left_gray
+
+# string, default=/apollo/sensor/pandora/camera/right_gray
+# pandora right gray camera topic name
+--pandora_camera_right_gray_topic=/apollo/sensor/pandora/camera/right_gray
+
+# string, default=/apollo/sensor/pandora/hesai40/PointCloud2
+# pandora pointcloud topic name
+--pandora_pointcloud_topic=/apollo/sensor/pandora/hesai40/PointCloud2
+
+# string, default=/apollo/perception/lane_mask
+# lane mask segmentation topic name
+--perception_lane_mask_segmentation_topic=/apollo/perception/lane_mask
+
+# string, default=/apollo/perception/obstacles
+# perception obstacle topic name
+--perception_obstacle_topic=/apollo/perception/obstacles
+
+# string, default=/apollo/planning/pad
+# planning pad topic name
+--planning_pad_topic=/apollo/planning/pad
+
+# string, default=/apollo/planning
+# planning trajectory topic name
+--planning_trajectory_topic=/apollo/planning
+
+# string, default=/apollo/sensor/velodyne64/fusion/PointCloud2
+# pointcloud fusion topic name
+--pointcloud_fusion_topic=/apollo/sensor/velodyne64/fusion/PointCloud2
+
+# string, default=/apollo/sensor/velodyne64/PointCloud2
+# pointcloud raw topic name
+--pointcloud_raw_topic=/apollo/sensor/velodyne64/PointCloud2
+
+# string, default=/apollo/sensor/velodyne64/compensator/PointCloud2
+# pointcloud topic name
+--pointcloud_topic=/apollo/sensor/velodyne64/compensator/PointCloud2
+
+# string, default=/apollo/prediction
+# prediction topic name
+--prediction_topic=/apollo/prediction
+
+# string, default=/apollo/sensor/racobit_radar
+# racobit radar topic name
+--racobit_radar_topic=/apollo/sensor/racobit_radar
+
+# string, default=/apollo/sensor/gnss/imu
+# Raw IMU topic name
+--raw_imu_topic=/apollo/sensor/gnss/imu
+
+# string, default=/apollo/relative_map
+# relative map
+--relative_map_topic=/apollo/relative_map
+
+# string, default=/apollo/calibration/relative_odometry
+# relative odometry topic name
+--relative_odometry_topic=/apollo/calibration/relative_odometry
+
+# string, default=/apollo/routing_request
+# routing request topic name
+--routing_request_topic=/apollo/routing_request
+
+# string, default=/apollo/routing_response
+# routing response topic name
+--routing_response_topic=/apollo/routing_response
+
+# string, default=/apollo/sensor/gnss/rtcm_data
+# gnss rtcm data topic name
+--rtcm_data_topic=/apollo/sensor/gnss/rtcm_data
+
+# string, default=/apollo/monitor/static_info
+# Static info topic name
+--static_info_topic=/apollo/monitor/static_info
+
+# string, default=/apollo/sensor/gnss/stream_status
+# gnss stream status topic name
+--stream_status_topic=/apollo/sensor/gnss/stream_status
+
+# string, default=/apollo/monitor/system_status
+# System status topic name
+--system_status_topic=/apollo/monitor/system_status
+
+# string, default=/apollo/perception/traffic_light
+# traffic light detection topic name
+--traffic_light_detection_topic=/apollo/perception/traffic_light
+
+# string, default=/apollo/sensor/ultrasonic_radar
+# ultrasonic esr radar topic name
+--ultrasonic_radar_topic=/apollo/sensor/ultrasonic_radar
+
+# string, default=/apollo/sensor/velodyne64/VelodyneScanUnified
+# velodyne64 raw data topic name
+--velodyne_raw_topic=/apollo/sensor/velodyne64/VelodyneScanUnified
+
+# string, default=/apollo/sensor/velodyne16/compensator/PointCloud2
+# 16 beam Lidar pointcloud topic name
+--vlp16_pointcloud_topic=/apollo/sensor/velodyne16/compensator/PointCloud2
+
+# string, default=base_map.bin|base_map.xml|base_map.txt
+# Base map files in the map_dir, search in order.
+--base_map_filename=base_map.bin|base_map.xml|base_map.txt
+
+# string, default=default_end_way_point.txt
+# End way point of the map, will be sent in RoutingRequest.
+--end_way_point_filename=default_end_way_point.txt
+
+# int32, default=10
+# UTM zone id.
+--local_utm_zone_id=10
+
+# string, default=localization
+# the tf2 transform child frame id
+--localization_tf2_child_frame_id=localization
+
+# string, default=world
+# the tf2 transform frame id
+--localization_tf2_frame_id=world
+
+# double, default=8
+# look forward time times adc speed to calculate this distance when creating reference line from routing
+--look_forward_time_sec=8
+
+# string, default=modules/map/data/demo
+# Directory which contains a group of related maps.
+--map_dir=/apollo/modules/map/data/sunnyvale_big_loop
+
+# string, default=modules/dreamview/conf/navigation_mode_default_end_way_point.txt
+# end_way_point file used if navigation mode is set.
+--navigation_mode_end_way_point_file=modules/dreamview/conf/navigation_mode_default_end_way_point.txt
+
+# string, default=routing_map.bin|routing_map.txt
+# Routing map files in the map_dir, search in order.
+--routing_map_filename=routing_map.bin|routing_map.txt
+
+# string, default=sim_map.bin|sim_map.txt
+# Simulation map files in the map_dir, search in order.
+--sim_map_filename=sim_map.bin|sim_map.txt
+
+# string, default=speed_control.pb.txt
+# The speed control region in a map.
+--speed_control_filename=speed_control.pb.txt
+
+# string, default=
+# If not empty, use this test base map files.
+--test_base_map_filename=
+
+# bool, default=false
+# Use relative position in navigation mode
+--use_navigation_mode=true
+
+# bool, default=false
+# Whether Clock::Now() gets time from system_clock::now() or from ros::Time::now().
+--use_ros_time=false
+
+# string, default=modules/common/data/mkz_config.pb.txt
+# the file path of vehicle config file
+--vehicle_config_path=/apollo/modules/common/data/mkz_config.pb.txt
+
+# string, default=modules/localization/msf/params/gnss_params/ant_imu_leverarm.yaml
+# Ant to imu leferarm.
+--ant_imu_leverarm_file=modules/localization/msf/params/gnss_params/ant_imu_leverarm.yaml
+
+# bool, default=false
+# enable gps heading
+--enable_gps_heading=false
+
+# bool, default=true
+# enable GPU/IMU interprolate
+--enable_gps_imu_interprolate=false
+
+# bool, default=false
+# True to set gps timestamp as localization header timestamp
+--enable_gps_timestamp=false
+
+# bool, default=true
+# enable heading filter
+--enable_heading_filter=true
+
+# bool, default=false
+# 
+--enable_ins_aid_rtk=false
+
+# bool, default=true
+# Enable lidar-based localization.
+--enable_lidar_localization=true
+
+# bool, default=false
+# True to get speed from chassis for lmd
+--enable_lmd_chassis_speed=false
+
+# bool, default=false
+# True to enable imu filter for lmd
+--enable_lmd_imu_filter=false
+
+# bool, default=false
+# True to enable realtime mapping for lmd
+--enable_lmd_mapping=false
+
+# bool, default=true
+# True to enable premapping for lmd
+--enable_lmd_premapping=true
+
+# bool, default=true
+# enable IMU data convert to map reference
+--enable_map_reference_unify=true
+
+# bool, default=true
+# enable watchdog
+--enable_watchdog=true
+
+# string, default=
+# 
+--eph_buffer_path=""
+
+# bool, default=false
+# Gnss Debug switch.
+--gnss_debug_log_flag=false
+
+# int32, default=0
+# GNSS Mode, 0 for bestgnss pose, 1 for self gnss.
+--gnss_mode=0
+
+# bool, default=false
+# Whether use bestgnsspose as measure after initializaiton.
+--gnss_only_init=false
+
+# double, default=0.02
+# gps/imu timestamp diff tolerance (sec)
+--gps_imu_timestamp_sec_diff_tolerance=0.02
+
+# double, default=1
+# gps message time delay tolerance (sec)
+--gps_time_delay_tolerance=1
+
+# bool, default=true
+# Use imu ant from gnss configure file.
+--if_imuant_from_file=true
+
+# bool, default=true
+# load utm zone id from local map folder
+--if_utm_zone_id_from_folder=true
+
+# bool, default=true
+# Whether load vehicle imu extrinsic from yaml file
+--if_vehicle_imu_from_file=true
+
+# bool, default=true
+# Right/forward/up
+--imu_coord_rfu=true
+
+# double, default=1
+# 
+--imu_rate=1
+
+# double, default=0
+# Imu ant offset x uncertainty
+--imu_to_ant_offset_ux=0.050000000000000003
+
+# double, default=0
+# Imu ant offset y uncertainty
+--imu_to_ant_offset_uy=0.050000000000000003
+
+# double, default=0
+# Imu ant offset z uncertainty
+--imu_to_ant_offset_uz=0.080000000000000002
+
+# double, default=0
+# Imu ant offset x
+--imu_to_ant_offset_x=0
+
+# double, default=0
+# Imu ant offset y
+--imu_to_ant_offset_y=0.78800000000000003
+
+# double, default=0
+# Imu ant offset z
+--imu_to_ant_offset_z=1.077
+
+# double, default=1
+# Vehicle imu quaternion qw
+--imu_vehicle_qw=1
+
+# double, default=0
+# Vehicle imu quaternion qx
+--imu_vehicle_qx=0
+
+# double, default=0
+# Vehicle imu quaternion qy
+--imu_vehicle_qy=0
+
+# double, default=0
+# Vehicle imu quaternion qz
+--imu_vehicle_qz=0
+
+# bool, default=false
+# 
+--integ_ins_can_self_align=false
+
+# bool, default=true
+# 
+--integ_sins_align_with_vel=true
+
+# bool, default=false
+# 
+--integ_sins_state_check=true
+
+# double, default=1
+# 
+--integ_sins_state_pos_std=1
+
+# double, default=60
+# 
+--integ_sins_state_span_time=30
+
+# bool, default=false
+# Lidar Debug switch.
+--lidar_debug_log_flag=false
+
+# string, default=modules/localization/msf/params/velodyne_params/velodyne64_novatel_extrinsics_example.yaml
+# Lidar extrinsics parameter file.
+--lidar_extrinsics_file=modules/localization/msf/params/velodyne_params/velodyne64_novatel_extrinsics_example.yaml
+
+# int32, default=11
+# Lidar filter size
+--lidar_filter_size=17
+
+# double, default=1.8
+# The height from the center of velodyne to ground.
+--lidar_height_default=1.8
+
+# string, default=modules/localization/msf/params/velodyne_params/velodyne64_height.yaml
+# Velodyne extrinsic path for the vehicle in use, where <ros> is the placeholder of ROS root.
+--lidar_height_file=modules/localization/msf/params/velodyne_params/velodyne64_height.yaml
+
+# double, default=0.40000000000000002
+# Lidar msg and imu msg max delay time
+--lidar_imu_max_delay_time=0.40000000000000002
+
+# int32, default=2
+# Localization mode, 0 for intensity, 1 for altitude, 2 for fusion.
+--lidar_localization_mode=2
+
+# double, default=0.90000000000000002
+# Threshold to detect wether vehicle is out of map
+--lidar_map_coverage_theshold=0.80000000000000004
+
+# int32, default=2
+# image yaw align mode, 0 for align off, 1 for fusion, 2 for fusion with multithread.
+--lidar_yaw_align_mode=2
+
+# string, default=modules/localization/conf/lmd_adapter.conf
+# lmd adapter configuration
+--lmd_adapter_config_file=modules/localization/conf/lmd_adapter.conf
+
+# string, default=/apollo/data/bag/data.bag
+# lmd rawinput bag file
+--lmd_rawinput_bag_file=/apollo/data/bag/data.bag
+
+# string, default=modules/localization/testdata/OdometryLaneMarkers.bin
+# lmd rawinput bin file
+--lmd_rawinput_bin_file=modules/localization/testdata/OdometryLaneMarkers.bin
+
+# string, default=local_map
+# The path of localization map.
+--local_map_name=local_map
+
+# string, default=modules/localization/conf/localization_config.pb.txt
+# localization config file
+--localization_config_file=/apollo/modules/localization/conf/navi_localization_config.pb.txt
+
+# string, default=localization
+# localization module name
+--localization_module_name=localization
+
+# double, default=100
+# localization publishing frequency.
+--localization_publish_freq=100
+
+# double, default=0
+# map_offsite: x
+--map_offset_x=0
+
+# double, default=0
+# map_offsite: y
+--map_offset_y=0
+
+# double, default=0
+# map_offsite: z
+--map_offset_z=0
+
+# string, default=data/map_visual
+# The path of map_visual folder.
+--map_visual_dir=data/map_visual
+
+# string, default=modules/localization/conf/msf_adapter.conf
+# msf adapter configuration
+--msf_adapter_config_file=modules/localization/conf/msf_adapter.conf
+
+# string, default=modules/localization/conf/msf_visual_adapter.conf
+# msf visualization adapter configuration
+--msf_visual_adapter_config_file=modules/localization/conf/msf_visual_adapter.conf
+
+# int32, default=2
+# Point cloud step
+--point_cloud_step=2
+
+# double, default=0.02
+# report threshold of timestamp diff between gps and imu(sec)
+--report_gps_imu_time_diff_threshold=0.02
+
+# int32, default=10
+# report threshold error num
+--report_threshold_err_num=10
+
+# string, default=modules/localization/conf/rtk_adapter.conf
+# rtk adapter configuration
+--rtk_adapter_config_file=modules/localization/conf/rtk_adapter.conf
+
+# double, default=9.9999999999999995e-07
+# timestamp second tolerance
+--timestamp_sec_tolerance=9.9999999999999995e-07
+
+# bool, default=true
+# 
+--trans_gpstime_to_utctime=true
+
+# string, default=modules/localization/msf/params/vehicle_params/vehicle_imu_extrinsics.yaml
+# Vehicle coord to imu coord.
+--vehicle_imu_file=modules/localization/msf/params/vehicle_params/vehicle_imu_extrinsics.yaml
+
+# double, default=5
+# 
+--vel_threshold_get_yaw=5
+
+# string, default=
+# log messages go to these email addresses in addition to logfiles
+--alsologtoemail=
+
+# bool, default=false
+# log messages go to stderr in addition to logfiles
+--alsologtostderr=false
+
+# bool, default=false
+# color messages logged to stderr (if supported by terminal)
+--colorlogtostderr=false
+
+# bool, default=true
+# Drop in-memory buffers of log contents. Logs can grow very quickly and they are rarely read before they need to be evicted from memory. Instead, drop them from memory as soon as they are flushed to disk.
+--drop_log_memory=true
+
+# string, default=
+# Emit a backtrace when logging at file:linenum.
+--log_backtrace_at=
+
+# string, default=
+# If specified, logfiles are written into this directory instead of the default logging directory.
+--log_dir=/apollo/data/log
+
+# string, default=
+# Put additional links to the log files in this directory
+--log_link=
+
+# bool, default=true
+# Prepend the log prefix to the start of each log line
+--log_prefix=true
+
+# int32, default=0
+# Buffer log messages logged at this level or lower (-1 means don't buffer; 0 means buffer INFO only; ...)
+--logbuflevel=0
+
+# int32, default=30
+# Buffer log messages for at most this many seconds
+--logbufsecs=30
+
+# int32, default=999
+# Email log messages logged at this level or higher (0 means email all; 3 means email FATAL only; ...)
+--logemaillevel=999
+
+# int32, default=436
+# Log file mode/permissions.
+--logfile_mode=436
+
+# string, default=/bin/mail
+# Mailer used to send logging email
+--logmailer=/bin/mail
+
+# bool, default=false
+# log messages go to stderr instead of logfiles
+--logtostderr=false
+
+# int32, default=1800
+# approx. maximum log file size (in MB). A value of 0 will be silently overridden to 1.
+--max_log_size=1800
+
+# int32, default=0
+# Messages logged at a lower level than this don't actually get logged anywhere
+--minloglevel=0
+
+# int32, default=2
+# log messages at or above this level are copied to stderr in addition to logfiles.  This flag obsoletes --alsologtostderr.
+--stderrthreshold=2
+
+# bool, default=false
+# Stop attempting to log to disk if the disk is full.
+--stop_logging_if_full_disk=false
+
+# bool, default=true
+# Symbolize the stack trace in the tombstone
+--symbolize_stacktrace=true
+
+# int32, default=0
+# Show all VLOG(m) messages for m <= this. Overridable by --vmodule.
+--v=4
+
+# string, default=
+# per-module verbose level. Argument is a comma-separated list of <module name>=<log level>. <module name> is a glob pattern, matched against the filename base (that is, name ignoring .cc/.h./-inl.h). <log level> overrides any value given by --v.
+--vmodule=
+
