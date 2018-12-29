@@ -115,6 +115,10 @@ PredictorOutput::PredictorOutput(
   constexpr double kTs = 0.01;
   constexpr double kCutoffFreq = 10.0;
   InitializeFilter(kTs, kCutoffFreq);
+
+  diffpos_between_imu_and_perception_.set_x(0.0);
+  diffpos_between_imu_and_perception_.set_y(0.0);
+  diffpos_between_imu_and_perception_.set_z(0.0);
 }
 
 PredictorOutput::~PredictorOutput() {}
@@ -170,10 +174,22 @@ Status PredictorOutput::Update() {
         predicted_.FindNearestPose(base_timestamp_sec, &base_pose);
         // assign position and heading from perception
         const auto& perception_pose = perception_pose_it->second;
-        base_pose.mutable_position()->CopyFrom(perception_pose.position());
-        base_pose.mutable_orientation()->CopyFrom(
-            perception_pose.orientation());
+
+        if (FLAGS_enable_imu_and_perception_adjust) {
+          diffpos_between_imu_and_perception_.set_x(
+              perception_pose.position().x() - base_pose.position().x() +
+              diffpos_between_imu_and_perception_.x());
+
+          diffpos_between_imu_and_perception_.set_y(
+              perception_pose.position().y() - base_pose.position().y() +
+              diffpos_between_imu_and_perception_.y());
+        } else {
+          base_pose.mutable_position()->CopyFrom(perception_pose.position());
+          base_pose.mutable_orientation()->CopyFrom(
+              perception_pose.orientation());
+        }
         base_pose.set_heading(perception_pose.heading());
+
       } else {
         base_timestamp_sec = predicted_.Latest()->first;
         base_pose = predicted_.Latest()->second;
@@ -187,6 +203,56 @@ Status PredictorOutput::Update() {
     Pose pose;
     PredictByImu(base_timestamp_sec, base_pose, timestamp_sec, &pose);
 
+    if (FLAGS_enable_imu_and_perception_adjust) {
+      constexpr double corect_ratio = 0.2;
+      auto enu_adjust_length_x =
+          corect_ratio * diffpos_between_imu_and_perception_.x();
+
+      auto enu_adjust_length_y =
+          corect_ratio * diffpos_between_imu_and_perception_.y();
+
+      pose.mutable_position()->set_x(enu_adjust_length_x + pose.position().x());
+
+      pose.mutable_position()->set_y(enu_adjust_length_y + pose.position().y());
+
+      diffpos_between_imu_and_perception_.set_x(
+          diffpos_between_imu_and_perception_.x() - enu_adjust_length_x);
+
+      diffpos_between_imu_and_perception_.set_y(
+          diffpos_between_imu_and_perception_.y() - enu_adjust_length_y);
+    }
+
+#if 1
+    PointENU enu_position;
+    enu_position.CopyFrom(pose.position());
+
+    double nearest_d2;
+    PCMapIndex near_ni, nearest_pi;
+    std::tie(near_ni, nearest_pi) =
+        pc_map_.GetNearestPointOpt(near_ni, enu_position, &nearest_d2);
+
+    if (nearest_pi != (PCMapIndex)-1) {
+      const auto& nearest_p = pc_map_.Point(nearest_pi);
+
+      double c0 = 0.0;
+      if (nearest_p.direction.z() < 0.0) {  // the nearest point is on right
+                                            // lanemark.
+        const auto& lanemarker = lane_markers_.right_lane_marker();
+        c0 = lanemarker.c0_position();
+      } else {  // the nearest point is on left
+                // lanemark.
+        const auto& lanemarker = lane_markers_.left_lane_marker();
+        c0 = lanemarker.c0_position();
+      }
+      double enu_predict_dx, enu_predict_dy;
+      RotateAxis(-pose.heading(), 0, c0, &enu_predict_dx, &enu_predict_dy);
+
+      pose.mutable_position()->set_x(nearest_p.position.x() - enu_predict_dx);
+      pose.mutable_position()->set_y(nearest_p.position.y() - enu_predict_dy);
+    }
+
+#endif
+
     // push pose to list
     predicted_.Push(timestamp_sec, pose);
 
@@ -197,6 +263,24 @@ Status PredictorOutput::Update() {
     // publish
     return publish_loc_func_(timestamp_sec, pose);
   }
+}
+
+bool PredictorOutput::UpdateLaneMarkers(
+    double timestamp_sec, const apollo::perception::LaneMarkers& lane_markers) {
+  if (!lane_markers.has_left_lane_marker()) {
+    AERROR << "There are no left lane marker in perception obstacles";
+    return false;
+  }
+  const auto& lanemarker = lane_markers.left_lane_marker();
+  if (!lanemarker.has_c0_position() || !lanemarker.has_c1_heading_angle() ||
+      !lanemarker.has_c2_curvature() ||
+      !lanemarker.has_c3_curvature_derivative()) {
+    AERROR << "left lane marker has no required params";
+    return false;
+  }
+  lane_markers_.CopyFrom(lane_markers);
+  lane_markers_time_ = timestamp_sec;
+  return true;
 }
 
 bool PredictorOutput::PredictByImu(double old_timestamp_sec,
@@ -439,45 +523,16 @@ bool PredictorOutput::EstimatedPosesFilter() {
     }
     pose_2.CopyFrom(latest_it_2->second);
 
-    double flu_dx0, flu_dy0;
-    RotateAxis(pose_1.heading(), pose_0.position().x() - pose_1.position().x(),
-               pose_0.position().y() - pose_1.position().y(), &flu_dx0,
-               &flu_dy0);
+    pose_0.mutable_position()->set_x(0.2 * pose_2.position().x() +
+                                     0.3 * pose_1.position().x() +
+                                     0.5 * pose_0.position().x());
 
-    double limit_range = 0.05;
-
-#if 1
-
-    if (flu_dy0 < limit_range) {
-      double enu_dx0, enu_dy0;
-      RotateAxis(-pose_1.heading(), flu_dx0, limit_range, &enu_dx0, &enu_dy0);
-
-      pose_0.mutable_position()->set_x(pose_1.position().x() + enu_dx0);
-
-      // pose_0.set_heading(pose_1.heading());
-    }
-
-    pose_0.mutable_position()->set_y(
-        (pose_1.position().y() + pose_0.position().y()) / 2.0);
+    pose_0.mutable_position()->set_y(0.2 * pose_2.position().y() +
+                                     0.3 * pose_1.position().y() +
+                                     0.5 * pose_0.position().y());
 
     predicted_.Push(timestamp_sec_1, pose_1);
     predicted_.Push(timestamp_sec_0, pose_0);
-
-#else
-
-    if (flu_dy0 > limit_range) {
-      pose_0.mutable_position()->set_y(
-          pose_1.position().y() +
-          (pose_0.position().y() - pose_2.position().y()) / 2.0);
-      predicted_.Push(timestamp_sec_1, pose_1);
-      predicted_.Push(timestamp_sec_0, pose_0);
-      return true;
-    } else {
-      predicted_.Push(timestamp_sec_1, pose_1);
-      predicted_.Push(timestamp_sec_0, pose_1);
-      return false;
-    }
-#endif
   }
 }
 

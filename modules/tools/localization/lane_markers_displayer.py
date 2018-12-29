@@ -73,7 +73,7 @@ def plot_lane(left_points, right_points,position,GPS):
     plt.scatter(position_x, position_y,color='g')
     gps_x = np.array(GPS)[:, 0]
     gps_y = np.array(GPS)[:, 1]
-    #plt.scatter(gps_x, gps_y,color='r')
+    plt.scatter(gps_x, gps_y,color='r')
     plt.show()
 
 

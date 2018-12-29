@@ -141,6 +141,7 @@ class LMDLocalization : public LocalizationBase {
   MessageReciever<Gps> gps_reciever_;
   MessageReciever<apollo::canbus::Chassis> filtered_imu_reciever_;
   MessageReciever<apollo::perception::PerceptionObstacles> perception_reciever_;
+  MessageReciever<apollo::perception::PerceptionObstacles> out_reciever_;
 };  // namespace localization
 
 }  // namespace localization

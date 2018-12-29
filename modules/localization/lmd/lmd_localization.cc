@@ -115,7 +115,15 @@ Status LMDLocalization::Start() {
   // output
   auto *predictor_output =
       new PredictorOutput(kDefaultMemoryCycle, publish_func);
-  add_predictor(predictor_output);
+  out_reciever_.Set(
+      *add_predictor(predictor_output), [=](const PerceptionObstacles &msg) {
+        if (!msg.has_header() || !msg.header().has_timestamp_sec() ||
+            !msg.has_lane_marker()) {
+          return;
+        }
+        predictor_output->UpdateLaneMarkers(msg.header().timestamp_sec(),
+                                            msg.lane_marker());
+      });
 
   // print_error
   auto *predictor_print_error = new PredictorPrintError(kDefaultMemoryCycle);

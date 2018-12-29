@@ -24,6 +24,7 @@ cc_library(
         "//modules/localization/lmd/predictor:localization_lmd_predictor",
         "//modules/localization/proto:odometry_lane_marker_proto",
         "//modules/localization/proto:localization_proto",
+         "//modules/localization/lmd/predictor/perception:localization_lmd_predictor_perception",
         "@gtest",
     ],
 )

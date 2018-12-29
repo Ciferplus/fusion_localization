@@ -49,13 +49,23 @@ DEFINE_string(lmd_rawinput_bin_file,
               "modules/localization/testdata/OdometryLaneMarkers.bin",
               "lmd rawinput bin file");
 
+DEFINE_string(lmd_rawinput_bin_file_left,
+              "modules/localization/testdata/OdometryLaneMarkers_left.bin",
+              "lmd rawinput bin file");
+
+DEFINE_string(lmd_rawinput_bin_file_right,
+              "modules/localization/testdata/OdometryLaneMarkers_right.bin",
+              "lmd rawinput bin file");
+
 // features
 DEFINE_bool(enable_gps_imu_interprolate, true, "enable GPU/IMU interprolate");
 DEFINE_bool(enable_map_reference_unify, true,
             "enable IMU data convert to map reference");
 DEFINE_bool(enable_watchdog, true, "enable watchdog");
-DEFINE_bool(enable_gps_heading, false, "enable gps heading");
+DEFINE_bool(enable_gps_heading, true, "enable gps heading");
 DEFINE_bool(enable_heading_filter, true, "enable heading filter");
+DEFINE_bool(enable_imu_and_perception_adjust, false,
+            "enable imu and perception adjust");
 
 DEFINE_double(gps_time_delay_tolerance, 1.0,
               "gps message time delay tolerance (sec)");

@@ -148,7 +148,7 @@ def write_info(source_tuple, filename):
         initial_z = (localization_former.z * proportion +
                      localization_next.z * (1 - proportion))
 
-        road_half_width = 2
+        road_half_width = 1.75
         ksample_number = 10
         lmd_left_lane_marker = left_lane_marker_group.lane_marker.add()
         left_offet = calculate_offset(-heading_value,0,road_half_width)
