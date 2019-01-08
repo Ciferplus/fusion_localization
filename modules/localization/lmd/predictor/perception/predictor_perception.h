@@ -83,9 +83,6 @@ class PredictorPerception : public Predictor {
   PCMap pc_map_;
   PCRegistrator pc_registrator_;
 
-  apollo::perception::LaneMarkers lane_markers_;
-  double lane_markers_time_;
-
   TimeMarkedList<std::vector<PCSourcePoint>> lane_markers_samples_;
   double deps_timestamp_sec_ = std::numeric_limits<double>::min();
 };

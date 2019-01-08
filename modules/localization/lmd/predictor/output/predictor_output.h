@@ -79,15 +79,18 @@ class PredictorOutput : public Predictor {
   bool PredictByImu(double old_timestamp_sec, const Pose &old_pose,
                     double new_timestamp_sec, Pose *new_pose);
   void InitializeFilter(const double ts, const double cutoff_freq);
-  bool EstimatedPosesFilter();
+  bool AdjustPositionInLane();
+  void find_near_heading(
+      const Pose& car_pose,
+      const apollo::common::PointENU& nearest_lanemarkpoint_pose_enu,
+      const apollo::common::PointENU& nearest_lanemarkpoint_pose_flu,
+      double *heading_corrected);
 
  private:
   apollo::perception::LaneMarkers lane_markers_;
   double lane_markers_time_;
   std::function<apollo::common::Status(double, const Pose &)> publish_loc_func_;
   common::DigitalFilter digital_filter_;
-
-  apollo::common::PointENU diffpos_between_imu_and_perception_;
 
   LMProvider lm_provider_;
   PCMap pc_map_;

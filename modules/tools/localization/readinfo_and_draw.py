@@ -23,8 +23,6 @@ trueacceleration_lateral = []
 gps_heading = []
 estimate_heading = []
 
-perception_error = []
-
 input = open('/apollo/data/log/localization.INFO', 'r')
 data = input.readlines()
 
@@ -106,18 +104,7 @@ for line in data:
         except:
             pass
 
-for line in data:
-    if re.findall('On registrating', line):
-        try:
-            line = line.split(',')
-            error = line[-1].split('[')[1].split(']')[0]
-            perception_error.append((float)(error))
-        except:
-            pass
 
-plt.figure('perception Error')
-plt.plot(perception_error, color='blue', label='$station$')
-plt.legend()
 #####################################################
 minVal = min(len(tuple(time)),len(tuple(stationerror)),len(tuple(lateralerror)),\
                 len(tuple(headingerror)),len(tuple(velocity_station_error)),\

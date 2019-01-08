@@ -198,6 +198,7 @@ void LMDLocalization::OnChassis(const Chassis &chassis) {
 void LMDLocalization::OnPerceptionObstacles(
     const PerceptionObstacles &obstacles) {
   perception_reciever_.OnMessage(obstacles);
+  out_reciever_.OnMessage(obstacles);
   // predicting
   Predicting();
 }

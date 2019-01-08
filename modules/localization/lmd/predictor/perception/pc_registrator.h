@@ -75,10 +75,6 @@ class PCRegistrator {
                       const apollo::common::PointENU& position,
                       double heading) const;
 
-  double ComputeError2(const std::vector<PCSourcePoint>& source_points,
-                      const apollo::common::PointENU& position,
-                      double heading) const;
-
  private:
   PCMap* map_;
 

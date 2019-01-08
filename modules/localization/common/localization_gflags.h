@@ -41,7 +41,7 @@ DECLARE_bool(enable_map_reference_unify);
 DECLARE_bool(enable_watchdog);
 DECLARE_bool(enable_gps_heading);
 DECLARE_bool(enable_heading_filter);
-DECLARE_bool(enable_imu_and_perception_adjust);
+DECLARE_bool(enable_position_adjust_by_lane);
 
 DECLARE_double(gps_time_delay_tolerance);
 DECLARE_double(gps_imu_timestamp_sec_diff_tolerance);

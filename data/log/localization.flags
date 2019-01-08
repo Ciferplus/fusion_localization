@@ -316,7 +316,7 @@
 
 # int32, default=10
 # UTM zone id.
---local_utm_zone_id=49
+--local_utm_zone_id=10
 
 # string, default=localization
 # the tf2 transform child frame id
@@ -370,9 +370,9 @@
 # Ant to imu leferarm.
 --ant_imu_leverarm_file=modules/localization/msf/params/gnss_params/ant_imu_leverarm.yaml
 
-# bool, default=true
+# bool, default=false
 # enable gps heading
---enable_gps_heading=true
+--enable_gps_heading=false
 
 # bool, default=true
 # enable GPU/IMU interprolate
@@ -385,10 +385,6 @@
 # bool, default=true
 # enable heading filter
 --enable_heading_filter=true
-
-# bool, default=false
-# enable imu and perception adjust
---enable_imu_and_perception_adjust=false
 
 # bool, default=false
 # 
@@ -417,6 +413,10 @@
 # bool, default=true
 # enable IMU data convert to map reference
 --enable_map_reference_unify=true
+
+# bool, default=true
+# enable position  adjust by lane slam
+--enable_position_adjust_by_lane=true
 
 # bool, default=true
 # enable watchdog
@@ -573,14 +573,6 @@
 # string, default=modules/localization/testdata/OdometryLaneMarkers.bin
 # lmd rawinput bin file
 --lmd_rawinput_bin_file=modules/localization/testdata/OdometryLaneMarkers.bin
-
-# string, default=modules/localization/testdata/OdometryLaneMarkers_left.bin
-# lmd rawinput bin file
---lmd_rawinput_bin_file_left=modules/localization/testdata/OdometryLaneMarkers_left.bin
-
-# string, default=modules/localization/testdata/OdometryLaneMarkers_right.bin
-# lmd rawinput bin file
---lmd_rawinput_bin_file_right=modules/localization/testdata/OdometryLaneMarkers_right.bin
 
 # string, default=local_map
 # The path of localization map.

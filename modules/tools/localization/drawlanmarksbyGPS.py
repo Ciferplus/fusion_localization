@@ -148,7 +148,7 @@ def write_info(source_tuple, filename):
         initial_z = (localization_former.z * proportion +
                      localization_next.z * (1 - proportion))
 
-        road_half_width = 1.75
+        road_half_width = 2
         ksample_number = 10
         lmd_left_lane_marker = left_lane_marker_group.lane_marker.add()
         left_offet = calculate_offset(-heading_value,0,road_half_width)
@@ -161,18 +161,18 @@ def write_info(source_tuple, filename):
                 point.position.x =  ratio * (initial_x + left_offet[0])+(1.0-ratio) * last_positionX
                 point.position.y = ratio * (initial_y + left_offet[1])+(1.0-ratio) * last_positionY
                 point.position.z = 0.0
-                point.direct.x = ratio * initial_x + (1.0-ratio)*last_directX#ratio * (direct_offset[0]) + (1.0-ratio) * last_directX
-                point.direct.y = ratio * initial_y + (1.0-ratio)*last_directY#ratio * (direct_offset[1]) + (1.0-ratio) * last_directY
+                point.direct.x = ratio * (direct_offset[0]) + (1.0-ratio) * last_directX
+                point.direct.y = ratio * (direct_offset[1]) + (1.0-ratio) * last_directY
                 point.direct.z = 0.0
-                point.curvature = ratio *heading_value + (1.0-ratio) * last_curvature
+                point.curvature = 0.0
 
         else:
             haved_lefe_value_flag = True
             last_positionX = initial_x + left_offet[0]
             last_positionY = initial_y + left_offet[1]
-            last_directX = initial_x#direct_offset[0]
-            last_directY = initial_y#direct_offset[1]
-            last_curvature = heading_value#0.0
+            last_directX = direct_offset[0]
+            last_directY = direct_offset[1]
+            last_curvature = 0.0
 
         lmd_left_lane_marker_point = lmd_left_lane_marker.points.add()
         left_offet = calculate_offset(-heading_value,0,road_half_width)
@@ -181,16 +181,16 @@ def write_info(source_tuple, filename):
         lmd_left_lane_marker_point.position.z = initial_z
 
         direct_offset = calculate_offset(-heading_value, 1.0, 0.0)
-        lmd_left_lane_marker_point.direct.x = initial_x#direct_offset[0]
-        lmd_left_lane_marker_point.direct.y = initial_y#direct_offset[1]
+        lmd_left_lane_marker_point.direct.x = direct_offset[0]
+        lmd_left_lane_marker_point.direct.y = direct_offset[1]
         lmd_left_lane_marker_point.direct.z = 0.0
-        lmd_left_lane_marker_point.curvature = heading_value#0.0
+        lmd_left_lane_marker_point.curvature = 0.0
 
         last_positionX = initial_x + left_offet[0]
         last_positionY = initial_y + left_offet[1]
-        last_directX = initial_x#direct_offset[0]
-        last_directY = initial_y#direct_offset[1]
-        last_curvature = heading_value#0.0
+        last_directX = direct_offset[0]
+        last_directY = direct_offset[1]
+        last_curvature = 0.0
 
 
         lmd_right_lane_marker = right_lane_marker_group.lane_marker.add()
@@ -204,18 +204,18 @@ def write_info(source_tuple, filename):
                 point2.position.x = ratio * (initial_x + right_offet[0])+(1.0-ratio) * last_positionX2
                 point2.position.y = ratio * (initial_y + right_offet[1])+(1.0-ratio) * last_positionY2
                 point2.position.z = 0.0
-                point2.direct.x = ratio * initial_x + (1.0-ratio)*last_directX2#ratio * (direct_offset[0]) + (1.0-ratio) * last_directX2
-                point2.direct.y = ratio * initial_y + (1.0-ratio)*last_directY2#ratio * (direct_offset[1]) + (1.0-ratio) * last_directY2
+                point2.direct.x = ratio * (direct_offset[0]) + (1.0-ratio) * last_directX2
+                point2.direct.y = ratio * (direct_offset[1]) + (1.0-ratio) * last_directY2
                 point2.direct.z = 0.0
-                point2.curvature = ratio *heading_value + (1.0-ratio) * last_curvature2#0.0
+                point2.curvature = 0.0
 
         else:
             haved_right_value_flag = True
             last_positionX2 = initial_x + right_offet[0]
             last_positionY2 = initial_y + right_offet[1]
-            last_directX2 = initial_x#direct_offset[0]
-            last_directY2 = initial_y#direct_offset[1]
-            last_curvature2 = heading_value#0.0
+            last_directX2 = direct_offset[0]
+            last_directY2 = direct_offset[1]
+            last_curvature2 = 0.0
         
 
         #lmd_right_lane_marker = right_lane_marker_group.lane_marker.add()
@@ -233,9 +233,9 @@ def write_info(source_tuple, filename):
 
         last_positionX2 = initial_x + right_offet[0]
         last_positionY2 = initial_y + right_offet[1]
-        last_directX2 = initial_x#direct_offset[0]
-        last_directY2 = initial_y#direct_offset[1]
-        last_curvature2 = heading_value#0.0
+        last_directX2 = direct_offset[0]
+        last_directY2 = direct_offset[1]
+        last_curvature2 = 0.0
 
     f.write(odometry_lane_markers_pack.SerializeToString())
     f.close()
