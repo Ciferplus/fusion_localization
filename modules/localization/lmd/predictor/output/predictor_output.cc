@@ -459,14 +459,6 @@ bool PredictorOutput::AdjustPositionInLane() {
 
     if (nearest_pi != (PCMapIndex)-1) {
       const auto& nearest_p = pc_map_.Point(nearest_pi);
-
-      if (nearest_p.prev == (PCMapIndex)-1 ||
-          nearest_p.next == (PCMapIndex)-1) {
-        ADEBUG << std::setprecision(15) << "not process position, x["
-               << nearest_p.position.x() << "], y[" << nearest_p.position.y()
-               << "], z[" << nearest_p.position.z() << "]";
-      }
-
       const auto& prev_p = pc_map_.Point(nearest_p.prev);
       const auto& next_p = pc_map_.Point(nearest_p.next);
 
@@ -566,90 +558,73 @@ bool PredictorOutput::AdjustPositionInLane() {
       otherside_enu_nearest_position.set_y(otherside_project_path_point.y());
       otherside_enu_nearest_position.set_z(otherside_project_path_point.z());
 
-      double c0 = 0.0;
-      double road_width = 3.5;
-      if (nearest_p.direction.z() < 0.0) {  // the nearest point is on right
-                                            // lanemark.
-        if (lane_markers_.has_right_lane_marker()) {
-          const auto& lanemarker = lane_markers_.right_lane_marker();
-          c0 = lanemarker.c0_position();
+      double nearest_lane_c0 = 0.0;
+      double nearest_lane_c1 = 0.0;
+      if (lane_markers_.has_right_lane_marker() &&
+          lane_markers_.has_left_lane_marker()) {
+        const auto& lanemarker_left = lane_markers_.left_lane_marker();
+        const auto& lanemarker_right = lane_markers_.right_lane_marker();
 
-          auto ratio = std::abs(c0) / road_width;
+        auto c0_left = lanemarker_left.c0_position();
+        auto c0_right = lanemarker_right.c0_position();
 
-          ADEBUG << std::setprecision(15) << "before position, x["
-                 << pose.position().x() << "], y[" << pose.position().y()
-                 << "], z[" << pose.position().z() << "]";
+        auto road_width_by_mobileye = std::abs(c0_left) + std::abs(c0_right);
+        // nearest_p.direction.z() < 0.0:the nearest point is on right
+        // lanemark,else on left lanemark.
+        nearest_lane_c0 = nearest_p.direction.z() < 0.0 ? c0_right : c0_left;
+        nearest_lane_c1 = nearest_p.direction.z() < 0.0
+                              ? lanemarker_right.c1_heading_angle()
+                              : lanemarker_left.c1_heading_angle();
 
-          pose.mutable_position()->set_x(
-              enu_nearest_position.x() +
-              ratio * (otherside_enu_nearest_position.x() -
-                       enu_nearest_position.x()));
+        auto ratio = std::abs(nearest_lane_c0) / road_width_by_mobileye;
 
-          pose.mutable_position()->set_y(
-              enu_nearest_position.y() +
-              ratio * (otherside_enu_nearest_position.y() -
-                       enu_nearest_position.y()));
+        ADEBUG << std::setprecision(15) << "before position, x["
+               << pose.position().x() << "], y[" << pose.position().y()
+               << "], z[" << pose.position().z() << "]";
 
-          ADEBUG << std::setprecision(15) << "after position, x["
-                 << pose.position().x() << "], y[" << pose.position().y()
-                 << "], z[" << pose.position().z() << "]";
+        pose.mutable_position()->set_x(enu_nearest_position.x() +
+                                       ratio *
+                                           (otherside_enu_nearest_position.x() -
+                                            enu_nearest_position.x()));
 
-          if (!FLAGS_enable_gps_heading) {
-            double heading = 0.0;
-            PointENU point_flu;
-            point_flu.set_x(0.0);
-            point_flu.set_y(c0);
-            point_flu.set_z(0.0);
-            find_near_heading(pose, enu_nearest_position, point_flu, &heading);
-            pose.set_heading(heading);
-          }
-        }
-      } else {  // the nearest point is on left lanemark.
-        if (lane_markers_.has_left_lane_marker()) {
-          const auto& lanemarker = lane_markers_.left_lane_marker();
-          c0 = lanemarker.c0_position();
+        pose.mutable_position()->set_y(enu_nearest_position.y() +
+                                       ratio *
+                                           (otherside_enu_nearest_position.y() -
+                                            enu_nearest_position.y()));
 
-          auto ratio = std::abs(c0) / road_width;
+        ADEBUG << std::setprecision(15) << "after position, x["
+               << pose.position().x() << "], y[" << pose.position().y()
+               << "], z[" << pose.position().z() << "]";
+      }
 
-          ADEBUG << std::setprecision(15) << "before position, x["
-                 << pose.position().x() << "], y[" << pose.position().y()
-                 << "], z[" << pose.position().z() << "]";
+      if (!FLAGS_enable_gps_heading) {
+        point0.set_x(0.0);
+        point0.set_y(nearest_lane_c0);
+        point0.set_z(0.0);
+        point0.set_s(0.0);
+        point1.set_x(0.5);
+        point1.set_y(nearest_lane_c0 + 0.5 * nearest_lane_c1);
+        point1.set_z(0.0);
+        point1.set_s(std::sqrt(std::pow(point1.x() - point0.x(), 2.0) +
+                               std::pow(point1.y() - point0.y(), 2.0)));
+        auto project_flu_point = FindProjectionPoint(point0, point1, 0.0, 0.0);
 
-          pose.mutable_position()->set_x(
-              enu_nearest_position.x() +
-              ratio * (otherside_enu_nearest_position.x() -
-                       enu_nearest_position.x()));
+        double heading = 0.0;
+        PointENU point_flu;
+        point_flu.set_x(project_flu_point.x());
+        point_flu.set_y(project_flu_point.y());
+        point_flu.set_z(0.0);
+        find_near_heading(pose, enu_nearest_position, point_flu, &heading);
+        pose.set_heading(heading);
 
-          pose.mutable_position()->set_y(
-              enu_nearest_position.y() +
-              ratio * (otherside_enu_nearest_position.y() -
-                       enu_nearest_position.y()));
-
-          ADEBUG << std::setprecision(15) << "after position, x["
-                 << pose.position().x() << "], y[" << pose.position().y()
-                 << "], z[" << pose.position().z() << "]";
-
-          if (!FLAGS_enable_gps_heading) {
-            double heading = 0.0;
-            PointENU point_flu;
-            point_flu.set_x(0.0);
-            point_flu.set_y(c0);
-            point_flu.set_z(0.0);
-            find_near_heading(pose, enu_nearest_position, point_flu, &heading);
-            pose.set_heading(heading);
-          }
+        latest_it = predicted_.Latest();
+        if (latest_it != predicted_.end()) {
+          pose.set_heading((pose.heading() + latest_it->second.heading()) /
+                           2.0);
         }
       }
+      predicted_.Push(timestamp_sec, pose);
     }
-
-    if (!FLAGS_enable_gps_heading) {
-      latest_it = predicted_.Latest();
-      if (latest_it != predicted_.end()) {
-        pose.set_heading((pose.heading() + latest_it->second.heading()) / 2.0);
-      }
-    }
-
-    predicted_.Push(timestamp_sec, pose);
   }
   return true;
 }
@@ -663,14 +638,17 @@ void PredictorOutput::find_near_heading(
   double error = 0.0;
   double range = 0.5;
   for (auto heading = car_pose.heading() - range;
-       heading <= car_pose.heading() + range; heading += 0.005) {
+       heading <= car_pose.heading() + range; heading += 0.05) {
     double enu_x, enu_y;
     RotateAxis(-heading, nearest_lanemarkpoint_pose_flu.x(),
                nearest_lanemarkpoint_pose_flu.y(), &enu_x, &enu_y);
 
-    error = std::sqrt(std::pow(
-        car_pose.position().y() + enu_y - nearest_lanemarkpoint_pose_enu.y(),
-        2.0));
+    error = std::sqrt(std::pow(car_pose.position().y() + enu_y -
+                                   nearest_lanemarkpoint_pose_enu.y(),
+                               2.0) +
+                      std::pow(car_pose.position().x() + enu_x -
+                                   nearest_lanemarkpoint_pose_enu.x(),
+                               2.0));
 
     if (error < current_error) {
       current_error = error;

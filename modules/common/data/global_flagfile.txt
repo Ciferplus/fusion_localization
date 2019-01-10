@@ -14,3 +14,4 @@
 --map_dir=/apollo/modules/map/data/sunnyvale_big_loop
 
 --use_navigation_mode=1
+--local_utm_zone_id=49
